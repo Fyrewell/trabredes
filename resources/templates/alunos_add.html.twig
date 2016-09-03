@@ -1,0 +1,8 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'alunos' %}
+
+{% block content %}
+    <h1>{{ 'Adicionar Aluno'|trans }}</h1>
+    {{ form(form, { attr: { novalidate: true } }) }}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'registro_presenca' %}
+
+{% block content %}
+    <h1>{{ 'Registros de presença'|trans }}</h1>
+      <a href="{{url('disciplinas_add')}}">
+        <button type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
+        </button>
+      </a>
+    <div class="panel panel-default" style="margin-top:16px">
+    
+      <div class="panel-heading">Abaixo a lista de registros de presença cadastrados</div>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Data Aula</th>
+            <th>Nome Aluno</th>
+            <th>Disciplina</th>
+            <th>Faltas</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for reg in dados %}
+          <tr>
+            <th scope="row">{{reg.id_disciplina}}</th>
+            <td>{{reg.nome}}</td>
+            <td>{{reg.semestre}}</td>
+            <td>
+              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('registro_presenca_add')}}/{{reg.id_disciplina}}/{{reg.id_aluno}}'" style="cursor:pointer"></button>
+              <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
+                onclick="if (confirm('Tem certeza que deseja excluir {{reg.nome}}?')) location.href='{{path('disciplinas_remove')}}/{{reg.id_disciplina}}/{{reg.id_aluno}}';" style="cursor:pointer">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

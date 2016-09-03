@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'disciplinas' %}
+
+{% block content %}
+    <h1>{{ 'Disciplinas'|trans }}</h1>
+      <a href="{{url('disciplinas_add')}}">
+        <button type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
+        </button>
+      </a>
+    <div class="panel panel-default" style="margin-top:16px">
+    
+      <div class="panel-heading">Abaixo a lista de disciplinas cadastrados</div>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Semestre</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for dsc in dados %}
+          <tr>
+            <th scope="row">{{dsc.id_disciplina}}</th>
+            <td>{{dsc.nome}}</td>
+            <td>{{dsc.semestre}}</td>
+            <td>
+              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('disciplinas_add')}}/{{dsc.id_disciplina}}'" style="cursor:pointer"></button>
+              <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
+                onclick="if (confirm('Tem certeza que deseja excluir {{dsc.nome}}?')) location.href='{{path('disciplinas_remove')}}/{{dsc.id_disciplina}}';" style="cursor:pointer">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

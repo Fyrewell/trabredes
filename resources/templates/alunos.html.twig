@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'alunos' %}
+
+{% block content %}
+    <h1>{{ 'Alunos'|trans }}</h1>
+      <a href="{{url('alunos_add')}}">
+        <button type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
+        </button>
+      </a>
+    <div class="panel panel-default" style="margin-top:16px">
+    
+      <div class="panel-heading">Abaixo a lista de alunos cadastrados</div>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Matricula</th>
+            <th>Tag</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for aluno in dados %}
+          <tr>
+            <th scope="row">{{aluno.id_aluno}}</th>
+            <td>{{aluno.nome}}</td>
+            <td>{{aluno.matricula}}</td>
+            <td>{{aluno.tag}}</td>
+            <td>
+              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('alunos_add')}}/{{aluno.id_aluno}}'" style="cursor:pointer"></button>
+              <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
+                onclick="if (confirm('Tem certeza que deseja excluir {{aluno.nome}}?')) location.href='{{path('alunos_remove')}}/{{aluno.id_aluno}}';" style="cursor:pointer">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

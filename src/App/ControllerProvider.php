@@ -32,7 +32,6 @@ class ControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/alunos', [$this, 'alunos'])
             ->bind('alunos');
-        
         $controllers
             ->get('/alunos/add/{id}', [$this, 'alunos_add'])
             ->bind('alunos_add/{id}');
@@ -43,7 +42,6 @@ class ControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/alunos/add', [$this, 'alunos_add'])
             ->bind('alunos_add');
-
         $controllers
             ->get('/alunos/remove', [$this, 'alunos_remove'])
             ->bind('alunos_remove');
@@ -74,7 +72,23 @@ class ControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/registro_presenca', [$this, 'registro_presenca'])
             ->bind('registro_presenca');
-        
+        $controllers
+            ->get('/registro_presenca/add/{id_registro_presenca}', [$this, 'registro_presenca_add'])
+            ->bind('registro_presenca_add/{id_registro_presenca}');
+        $controllers
+            ->post('/registro_presenca/add', [$this, 'registro_presenca_add']);
+        $controllers
+            ->post('/registro_presenca/add/{id_registro_presenca}', [$this, 'registro_presenca_add']);
+        $controllers
+            ->get('/registro_presenca/add', [$this, 'registro_presenca_add'])
+            ->bind('registro_presenca_add');
+        $controllers
+            ->get('/registro_presenca/remove', [$this, 'registro_presenca_remove'])
+            ->bind('registro_presenca_remove');
+        $controllers
+            ->get('/registro_presenca/remove/{id_registro_presenca}', [$this, 'registro_presenca_remove'])
+            ->bind('registro_presenca_remove/{id_registro_presenca}');
+            
         $controllers
             ->get('/doctrine', [$this, 'doctrine'])
             ->bind('doctrine');
@@ -83,11 +97,12 @@ class ControllerProvider implements ControllerProviderInterface
 
     public function homepage(App $app)
     {
+      /*
         $app['session']->getFlashBag()->add('warning', 'Warning flash message');
         $app['session']->getFlashBag()->add('info', 'Info flash message');
         $app['session']->getFlashBag()->add('success', 'Success flash message');
         $app['session']->getFlashBag()->add('danger', 'Danger flash message');
-
+      */
         return $app['twig']->render('index.html.twig');
     }
 
@@ -145,8 +160,8 @@ class ControllerProvider implements ControllerProviderInterface
                 }
                 $app['session']->getFlashBag()->add('success', 'Operação realizada com sucesso');
             } else {
-                $form->addError(new FormError('This is a global error'));
-                $app['session']->getFlashBag()->add('info', 'The form is bound, but not valid');
+                $form->addError(new FormError('Erro interno'));
+                $app['session']->getFlashBag()->add('info', 'O formulario foi recebido porem é invalido');
             }
         }
 
@@ -157,7 +172,6 @@ class ControllerProvider implements ControllerProviderInterface
     
     public function alunos_remove(App $app, Request $request, $id=0)
     {
-      echo $id;
       $app['db']->delete("aluno", ['id_aluno'=>$id]);
       return $app->redirect('../../alunos');
     }
@@ -195,13 +209,13 @@ class ControllerProvider implements ControllerProviderInterface
                 if (empty($id)){
                   $app['db']->insert('disciplina', ['nome' => $_POST['form']['nome'],'semestre' => $_POST['form']['semestre']]);
                 }else{
-                  $sql = "UPDATE disciplina SET nome = ?, semestre = ?, tag = ? WHERE id_disciplina = ?";
+                  $sql = "UPDATE disciplina SET nome = ?, semestre = ? WHERE id_disciplina = ?";
                   $app['db']->executeUpdate($sql, [$_POST['form']['nome'],$_POST['form']['semestre'], $id]);
                 }
                 $app['session']->getFlashBag()->add('success', 'Operação realizada com sucesso');
             } else {
-                $form->addError(new FormError('This is a global error'));
-                $app['session']->getFlashBag()->add('info', 'The form is bound, but not valid');
+                $form->addError(new FormError('Erro interno'));
+                $app['session']->getFlashBag()->add('info', 'O formulario foi recebido porem é invalido');
             }
         }
 
@@ -213,7 +227,6 @@ class ControllerProvider implements ControllerProviderInterface
     
     public function disciplinas_remove(App $app, Request $request, $id=0)
     {
-      echo $id;
       $app['db']->delete("disciplina", ['id_disciplina'=>$id]);
       return $app->redirect('../../disciplinas');
     }
@@ -221,10 +234,97 @@ class ControllerProvider implements ControllerProviderInterface
     public function registro_presenca(App $app, Request $request)
     {
       return $app['twig']->render('registro_presenca.html.twig', array(
-            'form' => $form->createView(),
+            'dados' => $app['db']->fetchAll(
+            'SELECT d.nome as disciplina_nome, a.nome as aluno_nome, rp.*
+               FROM registro_presenca rp 
+         INNER JOIN aluno a ON a.id_aluno = rp.id_aluno 
+         INNER JOIN disciplina d ON d.id_disciplina = rp.id_disciplina ')
         ));
     }
 
+    public function registro_presenca_add(App $app, Request $request, $id_registro_presenca=0)
+    {
+        $dados = ['id_registro_presenca'=>'', 'id_aluno'=>'','id_disciplina'=>'','data_aula'=>'','faltas'=>''];
+        if (!empty($id_registro_presenca)){
+          $dados = $app['db']->fetchAssoc('SELECT * FROM registro_presenca WHERE id_registro_presenca = ? ', [$id_registro_presenca]);
+        }
+        $choices_disc = [''=>'']; $disc_selected = 0;
+        $r_disc = $app['db']->fetchAll('SELECT id_disciplina,nome FROM disciplina');
+        foreach ($r_disc as $c){
+          $choices_disc[$c['id_disciplina']] = $c['nome'];
+          if ($dados['id_disciplina'] == $c['id_disciplina'] && !$disc_selected)
+            $disc_selected = count($choices_disc)-1;
+        }
+        $choices_alunos = [''=>'']; $aluno_selected = 0;
+        $r_alunos = $app['db']->fetchAll('SELECT id_aluno,nome FROM aluno');
+        foreach ($r_alunos as $r){
+          $choices_alunos[$r['id_aluno']] = $r['nome'];
+          if ($dados['id_aluno'] == $r['id_aluno'] && !$aluno_selected)
+            $aluno_selected = count($choices_alunos)-1;
+        }
+        
+        $builder = $app['form.factory']->createBuilder('form');
+
+        $form = $builder
+            ->add('id_registro_presenca', 'text', array('disabled' => true, 'attr' => array('placeholder' => 'id_registro_presenca', 'value' => $dados['id_registro_presenca'])))
+            ->add('id_disciplina', 'choice', array(
+                'choices' => $choices_disc,
+                'multiple' => false,
+                'expanded' => false,
+                'choice_attr' => [
+                  $disc_selected => ['selected' => 'selected'],
+                ],
+            ))
+            ->add('id_aluno', 'choice', array(
+                'choices' => $choices_alunos,
+                'multiple' => false,
+                'expanded' => false,
+                'choice_attr' => [
+                  $aluno_selected => ['selected' => 'selected'],
+                ],
+            ))
+            ->add('data_aula', 'date', array(
+                'constraints' => new Assert\NotBlank(),
+                'data' => empty($dados['data_aula']) ?  new \DateTime() : new \DateTime($dados['data_aula']),
+                'attr' => array('placeholder' => 'data_aula', 'format' => 'dd-MM-yyyy'),
+            ))
+            ->add('faltas', 'text', array('constraints' => new Assert\NotBlank(), 'attr' => array('placeholder' => 'faltas', 'value' => $dados['faltas'])))
+            ->add('submit', 'submit')
+            ->getForm()
+        ;
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->isValid()) {
+                $dt = date("d-m-Y", strtotime($_POST['form']['data_aula']['day'].'-'.$_POST['form']['data_aula']['month'].'-'.$_POST['form']['data_aula']['year']));
+                if (empty($id_registro_presenca)){
+                  try{
+                    $app['db']->insert('registro_presenca', ['faltas' => $_POST['form']['faltas'],'data_aula' => $dt, 'id_aluno' => $_POST['form']['id_aluno'], 'id_disciplina' => $_POST['form']['id_disciplina']]);
+                    $app['session']->getFlashBag()->add('success', 'Operação realizada com sucesso');
+                  }catch(\Exception $e){
+                    $form->addError(new FormError('Chamada para este dia e este aluno, ja cadastrado'));
+                  }
+                }else{
+                  $sql = "UPDATE registro_presenca SET faltas = ?, data_aula = ? WHERE id_registro_presenca= ?";
+                  $app['db']->executeUpdate($sql, [$_POST['form']['faltas'], $dt, $id_registro_presenca]);
+                  $app['session']->getFlashBag()->add('success', 'Operação realizada com sucesso');
+                }
+            } else {
+                $form->addError(new FormError('Erro interno'));
+                $app['session']->getFlashBag()->add('info', 'O formulario foi recebido porem é invalido');
+            }
+        }
+
+        return $app['twig']->render('registro_presenca_add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+        
+    }
+    
+    public function registro_presenca_remove(App $app, Request $request, $id_registro_presenca=0)
+    {
+      $app['db']->delete("registro_presenca", ['id_registro_presenca'=>$id_registro_presenca]);
+      return $app->redirect('../../registro_presenca');
+    }
+    
     public function form(App $app, Request $request)
     {
         $builder = $app['form.factory']->createBuilder('form');

@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>{{ 'Registros de presença'|trans }}</h1>
-      <a href="{{url('disciplinas_add')}}">
+      <a href="{{url('registro_presenca_add')}}">
         <button type="button" class="btn btn-success">
           <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
         </button>
@@ -16,9 +16,9 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Data Aula</th>
-            <th>Nome Aluno</th>
             <th>Disciplina</th>
+            <th>Aluno</th>
+            <th>Data Aula</th>
             <th>Faltas</th>
             <th>Ações</th>
           </tr>
@@ -26,13 +26,15 @@
         <tbody>
         {% for reg in dados %}
           <tr>
-            <th scope="row">{{reg.id_disciplina}}</th>
-            <td>{{reg.nome}}</td>
-            <td>{{reg.semestre}}</td>
+            <th scope="row">{{reg.id_registro_presenca}}</th>
+            <td>{{reg.disciplina_nome}}</td>
+            <td>{{reg.aluno_nome}}</td>
+            <td>{{reg.data_aula}}</td>
+            <td>{{reg.faltas}}</td>
             <td>
-              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('registro_presenca_add')}}/{{reg.id_disciplina}}/{{reg.id_aluno}}'" style="cursor:pointer"></button>
+              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('registro_presenca_add')}}/{{reg.id_registro_presenca}}'" style="cursor:pointer"></button>
               <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
-                onclick="if (confirm('Tem certeza que deseja excluir {{reg.nome}}?')) location.href='{{path('disciplinas_remove')}}/{{reg.id_disciplina}}/{{reg.id_aluno}}';" style="cursor:pointer">
+                onclick="if (confirm('Tem certeza que deseja excluir?')) location.href='{{path('registro_presenca_remove')}}/{{reg.id_registro_presenca}}';" style="cursor:pointer">
               </button>
             </td>
           </tr>

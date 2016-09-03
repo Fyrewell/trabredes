@@ -155,7 +155,7 @@ EOT
                 return $error ? 1 : 0;
             })
         ;
-
+/*
         $this
             ->register('fixture:load')
             ->setDescription('Load some fixture')
@@ -166,5 +166,6 @@ EOT
                     $this->silexApp['db']->insert('post', ['title' => 'hello #'.rand()]);
                 }
             });
+            */
     }
 }

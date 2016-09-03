@@ -10,6 +10,7 @@
                 {{ app.security.token.username }}
             {% endif %}
         </h1>
+        <!--
         <p>
             {% if is_granted('ROLE_USER') %}
                 You are logged-in.
@@ -18,5 +19,61 @@
                 You're not logged-in. Please <a href="{{ path('login') }}">{{ 'connect'|trans }}</a>
             {% endif %}
         </p>
+        -->
+{{"
+UNISC - Universidade de Santa Cruz do Sul
+Departamento de Computação
+Disciplina:Redes e Sistemas De Comunicações Móveis
+Prof. Charles V. Neu
+Primeiro Trabalho
+Data de entrega: 28/09/2016
+
+"|nl2br}}
+
+
+        {{"<b>Alunos: Diego Cardoso, Gustavo Rossi, Rodrigo Alves
+        
+        Objetivo:</b> estudar e aplicar conceitos de redes sem fio com os padrões IEEE 802.11
+e RFID em dispositivos móveis.
+Deve ser escrito um artigo explicando as principais funcionalidades do modelo
+desenvolvido, citando trechos do código fonte/script desenvolvido.
+<b>
+O trabalho consiste em desenvolver um sistema de registro de presença nas
+aulas, sendo que deve ser registrado o horário de chegada e o horário de saída
+dos alunos através de um cartão RFID.
+
+O leitor deste cartão deve ser instalado em um Arduíno, que por sua vez, deve
+comunicar-se com um Raspberry PI através de uma conexão IEEE802.11 para
+efetuar os registros dos horários em uma base de dados centralizada e
+instalada no Raspbeerry. No Raspberry, deve ser feita a validação do registro,
+como por exemplo, se o cartão lido pertence a algum aluno cadastrado. Se sim,
+deve retornar uma mensagem de OK no Arduíno. Senão, deve informar o erro
+em um display no Arduíno.
+
+Deve ser possível emitir um relatório do semestre listando Matrícula e Nome
+do Aluno, Data_da_Aula, Presença/Falta e um total do número de faltas para
+cada aluno, além do nome da disciplina e semestre.
+
+Avaliação:</b> será de acordo com os itens abaixo:
+1) Leitura do cartão RFID no Arduíno – valor 1.5.
+2) Comunicação Arduíno X Raspberry: Valor 1.5
+3) Desenvolvimento de um modelo de dados no Raspberry: Valor 0.5
+4) Desenvolvimento do sistema de gerenciamento de presenças no Raspberry
+(permitir cadastrar/alterar/excluir aluno e vincular a tag RFID, validar e efetuar
+o registro de presença, etc) :Valor 1.5
+5) Retorno da mensagem de registro efetuado/erro no display do Arduíno: Valor 1.0
+6) Relatório dos registros efetuados por semestre: Valor 1.0
+7) Escrever um artigo de acordo com o padrão da SBC sobre as etapas de
+desenvolvimento do modelo: Valor 2.0
+8) Apresentação e demonstração do trabalho em aula – valor 1.5.
+
+O trabalho pode ser realizado em grupos de até 3 pessoas. Data de Entrega e
+apresentação: 28/09/2016.
+<i>
+OBS: Trabalhos que não forem apresentados em aula terão nota ZERO. Da mesma
+forma, o aluno que não apresentar o trabalho feito em grupo também terá nota zero.
+
+OBS2: Trabalhos que apresentarem tarefas adicionais podem ter pontuação extra! Uma
+sugestão, é acessar o sistema do Raspberry via Bluetooth no celular ou no notebook.</i>"|nl2br}}
     </div>
 {% endblock %}

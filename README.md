@@ -5,14 +5,13 @@ Trabalho de Redes e Sistemas de Comunicações Móveis
 
 Instalação
 ------------
-    Necessita de Apache e PHP instalado.
+    Necessita de Apache, PHP e composer instalado.
     git clone https://github.com/Fyrewell/trabredes
     cd trabredes
     composer install
 
     php bin/console doctrine:database:create
     php bin/console doctrine:schema:load
-    php bin/console fixture:load
 
 Infos
 ----

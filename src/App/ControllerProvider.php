@@ -90,6 +90,10 @@ class ControllerProvider implements ControllerProviderInterface
             ->bind('registro_presenca_remove/{id_registro_presenca}');
             
         $controllers
+            ->get('/avaliar_tag/{tag}', [$this, 'avaliar_tag'])
+            ->bind('avaliar_tag/{tag}');
+            
+        $controllers
             ->get('/doctrine', [$this, 'doctrine'])
             ->bind('doctrine');
         return $controllers;
@@ -323,6 +327,15 @@ class ControllerProvider implements ControllerProviderInterface
     {
       $app['db']->delete("registro_presenca", ['id_registro_presenca'=>$id_registro_presenca]);
       return $app->redirect('../../registro_presenca');
+    }
+    
+    public function avaliar_tag(App $app, Request $request, $tag='')
+    {
+      $dados = $app['db']->fetchAssoc('SELECT * FROM aluno WHERE tag = ?', [$tag]);
+      if (count($dados)>1)
+        return new Response('ok - ' . $dados['matricula'] . ' - '. $dados['nome']);
+      else
+        return new Response('nok - Não encontrado.');
     }
     
     public function form(App $app, Request $request)

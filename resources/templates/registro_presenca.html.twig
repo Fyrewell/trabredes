@@ -9,6 +9,11 @@
           <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
         </button>
       </a>
+      <a href="{{url('registro_presenca_relatorio')}}">
+        <button type="button" class="btn btn-primary">
+          <span class="glyphicon glyphicon-download"></span> Relatório
+        </button>
+      </a>
     <div class="panel panel-default" style="margin-top:16px">
     
       <div class="panel-heading">Abaixo a lista de registros de presença cadastrados</div>
@@ -18,8 +23,8 @@
             <th>#</th>
             <th>Disciplina</th>
             <th>Aluno</th>
-            <th>Data Aula</th>
-            <th>Faltas</th>
+            <th>Data Entra</th>
+            <th>Data Sai</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -29,8 +34,8 @@
             <th scope="row">{{reg.id_registro_presenca}}</th>
             <td>{{reg.disciplina_nome}}</td>
             <td>{{reg.aluno_nome}}</td>
-            <td>{{reg.data_aula}}</td>
-            <td>{{reg.faltas}}</td>
+            <td>{{reg.data_entra}}</td>
+            <td>{{reg.data_sai}}</td>
             <td>
               <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('registro_presenca_add')}}/{{reg.id_registro_presenca}}'" style="cursor:pointer"></button>
               <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 

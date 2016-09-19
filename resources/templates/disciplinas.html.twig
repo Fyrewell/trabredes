@@ -18,6 +18,9 @@
             <th>#</th>
             <th>Nome</th>
             <th>Semestre</th>
+            <th>Dia semana</th>
+            <th>Data ini</th>
+            <th>Data fim</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -27,11 +30,15 @@
             <th scope="row">{{dsc.id_disciplina}}</th>
             <td>{{dsc.nome}}</td>
             <td>{{dsc.semestre}}</td>
+            <td>{{dsc.diasemana}}</td>
+            <td>{{dsc.data_ini}}</td>
+            <td>{{dsc.data_fim}}</td>
             <td>
               <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('disciplinas_add')}}/{{dsc.id_disciplina}}'" style="cursor:pointer"></button>
               <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
                 onclick="if (confirm('Tem certeza que deseja excluir {{dsc.nome}}?')) location.href='{{path('disciplinas_remove')}}/{{dsc.id_disciplina}}';" style="cursor:pointer">
               </button>
+              <button class="glyphicon glyphicon-play-circle" title="Gerar Aulas" onclick="location.href='{{path('gera_aulas')}}/{{dsc.id_disciplina}}'" style="cursor:pointer"></button>
             </td>
           </tr>
         {% endfor %}

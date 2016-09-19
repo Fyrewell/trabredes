@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'matricula_aluno' %}
+
+{% block content %}
+    <h1>{{ 'Matrícula Aluno'|trans }}</h1>
+      <a href="{{url('matricula_aluno_add')}}">
+        <button type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-plus"></span> Adicionar Novo
+        </button>
+      </a>
+    <div class="panel panel-default" style="margin-top:16px">
+    
+      <div class="panel-heading">Abaixo a lista de alunos nas respectivas disciplinas matrículados</div>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Disciplina</th>
+            <th>Aluno</th>
+            <th>Ano</th>
+            <th>Semestre</th>
+            <th>Dia semana</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for reg in dados %}
+          <tr>
+            <th scope="row">{{reg.id_disc_aluno}}</th>
+            <td>{{reg.disciplina_nome}}</td>
+            <td>{{reg.aluno_nome}}</td>
+            <td>{{reg.ano}}</td>
+            <td>{{reg.semestre}}</td>
+            <td>{{reg.diasemana}}</td>
+            <td>
+              <button class="glyphicon glyphicon-pencil" title="Editar" onclick="location.href='{{path('matricula_aluno_add')}}/{{reg.id_disc_aluno}}'" style="cursor:pointer"></button>
+              <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
+                onclick="if (confirm('Tem certeza que deseja excluir?')) location.href='{{path('matricula_aluno_remove')}}/{{reg.id_disc_aluno}}';" style="cursor:pointer">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

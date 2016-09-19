@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'matricula_aluno' %}
+
+{% block content %}
+    <h1>{{ 'Matrícula Aluno'|trans }}</h1>
+    <a href="{{url('matricula_aluno')}}">
+      <button type="button" class="btn btn-info" style="margin-bottom:16px;">
+        <span class="glyphicon glyphicon glyphicon-arrow-left"></span> Voltar
+      </button>
+    </a>
+    {{ form(form, { attr: { novalidate: true } }) }}
+{% endblock %}

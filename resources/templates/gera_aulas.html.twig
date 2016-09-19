@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% set active = 'disciplinas' %}
+
+{% block content %}
+    <h1>{{ 'Gerar Aulas'|trans }}</h1>
+      <a href="#" onclick="if (confirm('Tem certeza que deseja gerar?')) location.href='{{path('gera_aulas')}}/{{disciplina_id}}/1';">
+        <button type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-ok"></span> Gerar
+        </button>
+      </a>
+    <div class="panel panel-default" style="margin-top:16px">
+    
+      <div class="panel-heading">Abaixo a lista de disciplinas cadastrados</div>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Disciplina</th>
+            <th>Data Aula</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for dsc in dados %}
+          <tr>
+            <th scope="row">{{dsc.id_aula}}</th>
+            <td>{{dsc.id_disciplina}}</td>
+            <td>{{dsc.data_aula}}</td>
+            <td>
+              <button class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Excluir" 
+                onclick="location.href='{{path('aula_remove')}}/{{dsc.id_aula}}/{{disciplina_id}}'" style="cursor:pointer">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

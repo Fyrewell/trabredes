@@ -461,12 +461,6 @@ class ControllerProvider implements ControllerProviderInterface
       $t = '';
       error_reporting(!E_NOTICE);
       foreach($dados as $d){
-        //$d['data_entra'] = !empty($arrRegs[$d['id_aluno']][$d['id_disciplina']]['data_entra']) ? date('d-m-Y',strtotime($arrRegs[$d['id_aluno']][$d['id_disciplina']]['data_entra'])) : '';
-        //echo $d['data_entra'];
-        //echo date('d-m-Y',strtotime($d['data_aula']));
-        //
-        //echo $arrRegs[$d['id_aluno']][$d['id_disciplina']][date('d-m-Y',strtotime($d['data_aula']))]['data_entra'];
-        //echo '<br>';
         $d['data_entra'] = (!empty($arrRegs[$d['id_aluno']][$d['id_disciplina']][date('d-m-Y',strtotime($d['data_aula']))]['data_entra'])) ? $arrRegs[$d['id_aluno']][$d['id_disciplina']][date('d-m-Y',strtotime($d['data_aula']))]['data_entra']: '';
         $d['data_sai'] = (!empty($arrRegs[$d['id_aluno']][$d['id_disciplina']][date('d-m-Y',strtotime($d['data_aula']))]['data_sai'])) ? $arrRegs[$d['id_aluno']][$d['id_disciplina']][date('d-m-Y',strtotime($d['data_aula']))]['data_sai']: '';
         $t_calc_f = 200-((date('H',strtotime($d['data_sai']))*60 + date('i',strtotime($d['data_sai']))) - (date('H',strtotime($d['data_entra']))*60 + date('i',strtotime($d['data_entra']))));
@@ -476,7 +470,7 @@ class ControllerProvider implements ControllerProviderInterface
           $t .= $d['disciplina_nome'] . ';' . $d['matricula'] . ';' . $d['aluno_nome'] . ';' . $d['data_aula'] . ';' . $d['semestre'] . ';' . $d['data_entra'] . ';' . $d['data_sai'] . ';' . $qtd_faltas . "\n";
         }
       }
-      echo utf8_decode($t);
+      echo $t;
       
       exit();
     }
